@@ -10,8 +10,10 @@ Imports System.Threading
 
 Public Class Form1
     Dim currentFrame As Image(Of Bgr, [Byte])
+    Dim addFaceFrame As Image(Of Bgr, [Byte])
     Dim recFace As Integer = 10
     Dim grabber As Capture
+    Dim grabber2 As Capture
     Dim face As HaarCascade
     Dim eye As HaarCascade
     Dim font As New MCvFont(CvEnum.FONT.CV_FONT_HERSHEY_TRIPLEX, 0.5, 0.5)
@@ -23,15 +25,6 @@ Public Class Form1
     Dim ContTrain As Integer, NumLabels As Integer, t As Integer
     Dim name As String, names As String = Nothing
 
-    Private Sub button2_Click(sender As Object, e As EventArgs) Handles button2.Click
-        If recFace >= 0 Then
-            TrainFace()
-        Else
-            MessageBox.Show(txtName.Text + "´s face detected and added :)", "Training OK", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            txtName.Text = ""
-            imageBox1.Image = Nothing
-        End If
-    End Sub
 
     Private Sub TrainFace()
         Try
@@ -51,7 +44,7 @@ Public Class Form1
 
             'resize face detected image for force to compare the same size with the 
             'test image with cubic interpolation type method
-            TrainedFace = result.Resize(100, 100, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)
+            TrainedFace = result.Resize(205, 198, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)
             trainingImages.Add(TrainedFace)
             labels.Add(txtName.Text + " | " + txtBadge.Text)
 
@@ -66,12 +59,7 @@ Public Class Form1
                 trainingImages.ToArray()(i - 1).Save(Application.StartupPath + "/TrainedFaces/face" & i & ".bmp")
                 File.AppendAllText(Application.StartupPath + "/TrainedFaces/TrainedLabels.txt", labels.ToArray()(i - 1) + "%")
             Next
-            MessageBox.Show("Try to record face : " + recFace - 1 + "More")
-
             'Trained face counter
-
-
-
         Catch ex As Exception
             MessageBox.Show(ex.Message)
             'MessageBox.Show("Enable the face detection first", "Training Fail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -104,6 +92,119 @@ Public Class Form1
 
     Private Sub pbMinimize_Click(sender As Object, e As EventArgs) Handles pbMinimize.Click
         Me.WindowState = FormWindowState.Minimized
+    End Sub
+
+    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+
+        NamePersons.Add("")
+        'Get the current frame form capture device
+        addFaceFrame = grabber2.QueryFrame().Resize(675, 374, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)
+
+        'Convert it to Grayscale
+        gray = addFaceFrame.Convert(Of Gray, [Byte])()
+        'Face Detector
+        Dim facesDetected As MCvAvgComp()() = gray.DetectHaarCascade(face, 1.2, 10, Emgu.CV.CvEnum.HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, New Size(20, 20))
+        'Action for each element detected
+        For Each f As MCvAvgComp In facesDetected(0)
+            t = t + 1
+            result = addFaceFrame.Copy(f.rect).Convert(Of Gray, Byte)().Resize(100, 100, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)
+            'draw the face detected in the 0th (gray) channel with blue color
+            addFaceFrame.Draw(f.rect, New Bgr(Color.LightGreen), 2)
+            If trainingImages.ToArray().Length <> 0 Then
+                'TermCriteria for face recognition with numbers of trained images like maxIteration
+                Dim termCrit As New MCvTermCriteria(ContTrain, 0.001)
+
+                'Eigen face recognizer
+                Dim recognizer As New EigenObjectRecognizer(trainingImages.ToArray(), labels.ToArray(), 3000, termCrit)
+
+                name = recognizer.Recognize(result)
+
+                'Draw the label for each face detected and recognized
+
+                addFaceFrame.Draw(name, font, New Point(f.rect.X - 2, f.rect.Y - 2), color:=New Bgr(Color.LightGreen))
+            End If
+
+            NamePersons(t - 1) = name
+            NamePersons.Add("")
+
+        Next
+        t = 0
+
+        'Names concatenation of persons recognized
+        For nnn As Integer = 0 To facesDetected(0).Length - 1
+            names = names + NamePersons(nnn) + ", "
+        Next
+        'Show the faces procesed and recognized
+        ImageBoxAddFace.Image = addFaceFrame
+        names = ""
+        'Clear the list(vector) of names
+        NamePersons.Clear()
+    End Sub
+
+    Private Sub TabPage2_Click(sender As Object, e As EventArgs) Handles TabPage2.Click
+
+    End Sub
+
+    Private Sub TabPage2_Leave(sender As Object, e As EventArgs) Handles TabPage2.Leave
+        Timer3.Stop()
+    End Sub
+
+    Private Sub TabPage2_MouseClick(sender As Object, e As MouseEventArgs) Handles TabPage2.MouseClick
+
+
+    End Sub
+
+    Private Sub TabPage2_Enter(sender As Object, e As EventArgs) Handles TabPage2.Enter
+        If grabber IsNot Nothing Then
+            grabber.Dispose()
+            imageBoxFrameGrabber.Image = Nothing
+            button1.Enabled = True
+
+        End If
+
+        imageBoxFrameGrabber.Image = Nothing
+        grabber = Nothing
+        grabber2 = New Capture()
+        grabber2.QueryFrame()
+        Timer1.Stop()
+        Timer3.Start()
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+            txtName.Enabled = False
+            txtBadge.Enabled = False
+            TabPage1.Enabled = False
+            If recFace > 0 Then
+                TrainFace()
+                recFace = recFace - 1
+                MessageBox.Show("Try to record face : " + recFace.ToString() + " More", "Adding Face", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show(txtName.Text + "´s face detected and added :)", "Training OK", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                txtName.Enabled = True
+                txtBadge.Enabled = True
+                TabPage1.Enabled = True
+                txtName.Text = ""
+                ImageBox1.Image = Nothing
+                recFace = 10
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Some Error : " + ex.Message, "Failed Add Face", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        End Try
+
+    End Sub
+
+    Private Sub TabPage1_Enter(sender As Object, e As EventArgs) Handles TabPage1.Enter
+        If grabber2 IsNot Nothing Then
+            grabber2.Dispose()
+            ImageBoxAddFace.Image = Nothing
+        End If
+        ImageBoxAddFace.Image = Nothing
+        ImageBox1.Image = Nothing
+        button1.Enabled = True
+        Timer3.Stop()
+        'Timer1.Start()
     End Sub
 
     Private Sub button1_Click(sender As Object, e As EventArgs) Handles button1.Click
@@ -389,10 +490,6 @@ Public Class Form1
         End Try
     End Sub
 
-
-
-
-
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
         label3.Text = "0"
 
@@ -444,6 +541,9 @@ Public Class Form1
         'Show the faces procesed and recognized
         imageBoxFrameGrabber.Image = currentFrame
         label4.Text = names
+        If Convert.ToInt32(label3.Text) = 1 Then
+            MessageBox.Show("Face Detected " + label4.Text)
+        End If
         names = ""
         'Clear the list(vector) of names
         NamePersons.Clear()

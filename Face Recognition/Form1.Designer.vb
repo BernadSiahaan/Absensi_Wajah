@@ -35,11 +35,7 @@ Partial Class Form1
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.groupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.txtBadge = New System.Windows.Forms.TextBox()
         Me.label1 = New System.Windows.Forms.Label()
-        Me.txtName = New System.Windows.Forms.TextBox()
-        Me.imageBox1 = New Emgu.CV.UI.ImageBox()
-        Me.button2 = New System.Windows.Forms.Button()
         Me.button1 = New System.Windows.Forms.Button()
         Me.label3 = New System.Windows.Forms.Label()
         Me.label4 = New System.Windows.Forms.Label()
@@ -47,7 +43,15 @@ Partial Class Form1
         Me.label5 = New System.Windows.Forms.Label()
         Me.imageBoxFrameGrabber = New Emgu.CV.UI.ImageBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.ImageBox1 = New Emgu.CV.UI.ImageBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.txtBadge = New System.Windows.Forms.TextBox()
+        Me.ImageBoxAddFace = New Emgu.CV.UI.ImageBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtName = New System.Windows.Forms.TextBox()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         CType(Me.pbMinimize, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbMazimize, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -55,8 +59,10 @@ Partial Class Form1
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.groupBox1.SuspendLayout()
-        CType(Me.imageBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.imageBoxFrameGrabber, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage2.SuspendLayout()
+        CType(Me.ImageBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ImageBoxAddFace, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Timer1
@@ -152,17 +158,13 @@ Partial Class Form1
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(899, 401)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "TabPage1"
+        Me.TabPage1.Text = "ABSENSI"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
         'groupBox1
         '
         Me.groupBox1.Controls.Add(Me.Label6)
-        Me.groupBox1.Controls.Add(Me.txtBadge)
         Me.groupBox1.Controls.Add(Me.label1)
-        Me.groupBox1.Controls.Add(Me.txtName)
-        Me.groupBox1.Controls.Add(Me.imageBox1)
-        Me.groupBox1.Controls.Add(Me.button2)
         Me.groupBox1.Location = New System.Drawing.Point(691, 125)
         Me.groupBox1.Name = "groupBox1"
         Me.groupBox1.Size = New System.Drawing.Size(194, 270)
@@ -179,14 +181,6 @@ Partial Class Form1
         Me.Label6.TabIndex = 10
         Me.Label6.Text = "Badge"
         '
-        'txtBadge
-        '
-        Me.txtBadge.Location = New System.Drawing.Point(13, 210)
-        Me.txtBadge.Name = "txtBadge"
-        Me.txtBadge.Size = New System.Drawing.Size(177, 20)
-        Me.txtBadge.TabIndex = 9
-        Me.txtBadge.Text = "----"
-        '
         'label1
         '
         Me.label1.AutoSize = True
@@ -195,35 +189,6 @@ Partial Class Form1
         Me.label1.Size = New System.Drawing.Size(41, 13)
         Me.label1.TabIndex = 8
         Me.label1.Text = "Name: "
-        '
-        'txtName
-        '
-        Me.txtName.Location = New System.Drawing.Point(11, 171)
-        Me.txtName.Name = "txtName"
-        Me.txtName.Size = New System.Drawing.Size(177, 20)
-        Me.txtName.TabIndex = 7
-        Me.txtName.Text = "----"
-        '
-        'imageBox1
-        '
-        Me.imageBox1.BackColor = System.Drawing.Color.Transparent
-        Me.imageBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.imageBox1.InitialImage = Nothing
-        Me.imageBox1.Location = New System.Drawing.Point(11, 18)
-        Me.imageBox1.Name = "imageBox1"
-        Me.imageBox1.Size = New System.Drawing.Size(177, 134)
-        Me.imageBox1.TabIndex = 5
-        Me.imageBox1.TabStop = False
-        '
-        'button2
-        '
-        Me.button2.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.button2.Location = New System.Drawing.Point(11, 233)
-        Me.button2.Name = "button2"
-        Me.button2.Size = New System.Drawing.Size(180, 31)
-        Me.button2.TabIndex = 3
-        Me.button2.Text = "Train"
-        Me.button2.UseVisualStyleBackColor = True
         '
         'button1
         '
@@ -292,15 +257,92 @@ Partial Class Form1
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.ImageBox1)
+        Me.TabPage2.Controls.Add(Me.Label8)
+        Me.TabPage2.Controls.Add(Me.Button2)
+        Me.TabPage2.Controls.Add(Me.txtBadge)
+        Me.TabPage2.Controls.Add(Me.ImageBoxAddFace)
+        Me.TabPage2.Controls.Add(Me.Label9)
+        Me.TabPage2.Controls.Add(Me.txtName)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(899, 401)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
+        Me.TabPage2.Text = "DAFTAR WAJAH"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'ImageBox1
+        '
+        Me.ImageBox1.BackColor = System.Drawing.Color.Transparent
+        Me.ImageBox1.BackgroundImage = Global.Aplikasi_Absensi_Wajah.My.Resources.Resources.acb2ff8f4b2df5982605f86d3321ed54
+        Me.ImageBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ImageBox1.InitialImage = Nothing
+        Me.ImageBox1.Location = New System.Drawing.Point(6, 6)
+        Me.ImageBox1.Name = "ImageBox1"
+        Me.ImageBox1.Size = New System.Drawing.Size(201, 202)
+        Me.ImageBox1.TabIndex = 5
+        Me.ImageBox1.TabStop = False
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(329, 359)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(38, 13)
+        Me.Label8.TabIndex = 10
+        Me.Label8.Text = "Badge"
+        '
+        'Button2
+        '
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.Button2.Location = New System.Drawing.Point(517, 360)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(238, 35)
+        Me.Button2.TabIndex = 3
+        Me.Button2.Text = "Training Wajah"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'txtBadge
+        '
+        Me.txtBadge.Location = New System.Drawing.Point(334, 375)
+        Me.txtBadge.Name = "txtBadge"
+        Me.txtBadge.Size = New System.Drawing.Size(177, 20)
+        Me.txtBadge.TabIndex = 9
+        '
+        'ImageBoxAddFace
+        '
+        Me.ImageBoxAddFace.BackgroundImage = Global.Aplikasi_Absensi_Wajah.My.Resources.Resources.frame
+        Me.ImageBoxAddFace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.ImageBoxAddFace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ImageBoxAddFace.InitialImage = Global.Aplikasi_Absensi_Wajah.My.Resources.Resources.frame
+        Me.ImageBoxAddFace.Location = New System.Drawing.Point(167, 6)
+        Me.ImageBoxAddFace.Name = "ImageBoxAddFace"
+        Me.ImageBoxAddFace.Size = New System.Drawing.Size(588, 348)
+        Me.ImageBoxAddFace.TabIndex = 15
+        Me.ImageBoxAddFace.TabStop = False
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(148, 360)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(41, 13)
+        Me.Label9.TabIndex = 8
+        Me.Label9.Text = "Name: "
+        '
+        'txtName
+        '
+        Me.txtName.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtName.Location = New System.Drawing.Point(151, 375)
+        Me.txtName.Name = "txtName"
+        Me.txtName.Size = New System.Drawing.Size(177, 20)
+        Me.txtName.TabIndex = 7
+        '
         'Timer2
+        '
+        '
+        'Timer3
         '
         '
         'Form1
@@ -326,8 +368,11 @@ Partial Class Form1
         Me.TabPage1.PerformLayout()
         Me.groupBox1.ResumeLayout(False)
         Me.groupBox1.PerformLayout()
-        CType(Me.imageBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.imageBoxFrameGrabber, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
+        CType(Me.ImageBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ImageBoxAddFace, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -348,13 +393,17 @@ Partial Class Form1
     Friend WithEvents Label7 As Label
     Private WithEvents groupBox1 As GroupBox
     Private WithEvents Label6 As Label
-    Private WithEvents txtBadge As TextBox
     Private WithEvents label1 As Label
-    Private WithEvents txtName As TextBox
-    Private WithEvents imageBox1 As ImageBox
-    Private WithEvents button2 As Button
     Friend WithEvents lblTime As Label
     Friend WithEvents Timer2 As Timer
     Friend WithEvents pbMazimize As PictureBox
     Friend WithEvents pbMinimize As PictureBox
+    Private WithEvents ImageBoxAddFace As ImageBox
+    Private WithEvents ImageBox1 As ImageBox
+    Private WithEvents Label8 As Label
+    Private WithEvents Button2 As Button
+    Private WithEvents txtBadge As TextBox
+    Private WithEvents Label9 As Label
+    Private WithEvents txtName As TextBox
+    Friend WithEvents Timer3 As Timer
 End Class
