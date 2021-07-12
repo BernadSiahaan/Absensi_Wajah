@@ -1,0 +1,13 @@
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.vbprojAssemblyReference.cache
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.vbproj.GenerateResource.cache
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.vbproj.CoreCompileInputs.cache
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.vbproj.CopyComplete
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi_Absensi_Wajah.Form1.resources
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi_Absensi_Wajah.frmLogin.resources
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi_Absensi_Wajah.Resources.resources
+D:\ARI\Face Recognition\Face Recognition\bin\Debug\Aplikasi Absensi Wajah.exe
+D:\ARI\Face Recognition\Face Recognition\bin\Debug\Aplikasi Absensi Wajah.pdb
+D:\ARI\Face Recognition\Face Recognition\bin\Debug\Aplikasi Absensi Wajah.xml
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.exe
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.xml
+D:\ARI\Face Recognition\Face Recognition\obj\x86\Debug\Aplikasi Absensi Wajah.pdb
